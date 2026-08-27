@@ -19,8 +19,7 @@ app.use(bodyParser.json());
 // CORS
 const allowedOrigins = [
     "http://localhost:3000",
-    // Add your Vercel frontend URL here after deployment
-    // "https://your-frontend.vercel.app",
+    "https://project-git-main-apsans-projects-d6a4facb.vercel.app/",
 ];
 
 app.use(
@@ -31,7 +30,7 @@ app.use(
     }),
 );
 
-
+// Static files
 app.use(express.static("public"));
 
 // Routes
