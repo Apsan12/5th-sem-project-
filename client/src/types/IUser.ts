@@ -12,3 +12,4 @@ export interface IUser {
     defaultAddress: number;
     disabled: boolean;
 }
+

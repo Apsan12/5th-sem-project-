@@ -57,3 +57,4 @@ export interface PaginatedResponse<T> {
 }
 
 export type PaymentResponse = PaginatedResponse<PaymentRecord>;
+

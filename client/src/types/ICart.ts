@@ -6,3 +6,4 @@ export type ICart = {
     price: number;
     qty: number;
 };
+

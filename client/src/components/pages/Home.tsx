@@ -1,4 +1,3 @@
-import headerImage from "../../assets/images/header.jpg";
 import Header from "../ui/Header";
 import {
     PiCpuBold,
@@ -37,7 +36,7 @@ export default function HomePage() {
             <div className="flex flex-col w-full">
                 <div className="w-full min-h-screen bg-black flex gap">
                     <img
-                        src={headerImage}
+                        src="/images/header.jpg"
                         className="w-[50%] h-screen bg-contain"
                     />
                     <div className="w-full h-screen flex flex-col justify-center items-center gap-8">
@@ -66,15 +65,15 @@ export default function HomePage() {
                         </button>
                     </div>
                     <img
-                        src="/src/assets/images/laptop.png"
+                        src="/images/laptop.png"
                         className="h-120 w-160"
                     />
                 </div>
-                <div className=" w-full min-h-screen max-h-fit flex flex-col py-16 px-8 gap-12 justify-cente items-center bg-[url(/src/assets/images/info_background.jpg)] bg-cover bg-no-repeat ">
+                <div className=" w-full min-h-screen max-h-fit flex flex-col py-16 px-8 gap-12 justify-cente items-center bg-[url(/images/info_background.jpg)] bg-cover bg-no-repeat ">
                     <h1 className="font-audiowide text-white">
                         BEST PLACE TO GET GAMING READY LAPTOPS
                     </h1>
-                    <img src="/src/assets/images/laptop2.png" width={"340px"} />
+                    <img src="/images/laptop2.png" width={"340px"} />
                     <h3 className="text-white">ASUS TUF F16 Pro</h3>
                     <ul className="text-white col-end-2 columns-2 gap-8 leading-12 text-xl">
                         <li className="flex items-center gap-2">
@@ -141,5 +140,7 @@ export default function HomePage() {
         </>
     );
 }
+
+
 
 
