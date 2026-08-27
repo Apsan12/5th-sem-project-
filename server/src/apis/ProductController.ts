@@ -7,7 +7,6 @@ import path from "node:path";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 
 const ProductController = {
-
     async createProduct(
         req: MyRequest<{}, {}, IProduct>,
         res: Response,
@@ -16,7 +15,7 @@ const ProductController = {
             // Check admin
             const user = await User.findById(req.userId);
 
-            if (user?.email !== "admin@shop.com") {
+            if (!user || user.email !== "admin@shop.com") {
                 return res.status(403).json({
                     message: "Only admins can access this route",
                 });
@@ -32,7 +31,13 @@ const ProductController = {
             }
 
             // Parse product info
-            req.body.info = JSON.parse(String(req.body.info));
+            try {
+                req.body.info = JSON.parse(String(req.body.info));
+            } catch {
+                return res.status(400).json({
+                    message: "Invalid product information format",
+                });
+            }
 
             // Create product
             const product = await Product.create(req.body);
@@ -40,8 +45,10 @@ const ProductController = {
             // Public directory
             const publicDir = path.join(process.cwd(), "public");
 
-            // Create public directory if it doesn't exist
-            await mkdir(publicDir, { recursive: true });
+            // Make sure public directory exists
+            await mkdir(publicDir, {
+                recursive: true,
+            });
 
             // Save images
             const filenames = await Promise.all(
@@ -52,16 +59,18 @@ const ProductController = {
 
                     const filename = `${product._id}-${i}${ext}`;
 
-                    const filePath = path.join(publicDir, filename);
+                    const filePath = path.join(
+                        publicDir,
+                        filename,
+                    );
 
-                    // IMPORTANT: await the write
                     await writeFile(filePath, file.buffer);
 
                     return filename;
                 }),
             );
 
-            // Save image names to database
+            // Save image names
             product.images = filenames;
 
             await product.save();
@@ -70,17 +79,20 @@ const ProductController = {
                 message: "Product Added Successfully",
                 product,
             });
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error("CREATE PRODUCT ERROR:", error);
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to create product",
+                error:
+                    process.env.NODE_ENV === "production"
+                        ? undefined
+                        : error,
             });
         }
     },
-
 
     async getVisibleProductById(
         req: MyRequest<{ id: string }>,
@@ -105,18 +117,20 @@ const ProductController = {
             }
 
             return res.status(200).json(product);
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "GET VISIBLE PRODUCT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to get product",
             });
         }
     },
 
- 
     async getProductById(
         req: MyRequest<{ id: string }>,
         res: Response,
@@ -124,7 +138,7 @@ const ProductController = {
         try {
             const user = await User.findById(req.userId);
 
-            if (user?.email !== "admin@shop.com") {
+            if (!user || user.email !== "admin@shop.com") {
                 return res.status(403).json({
                     message: "Only admins can access this route",
                 });
@@ -136,7 +150,9 @@ const ProductController = {
                 });
             }
 
-            const product = await Product.findById(req.params.id);
+            const product = await Product.findById(
+                req.params.id,
+            );
 
             if (!product) {
                 return res.status(404).json({
@@ -145,17 +161,19 @@ const ProductController = {
             }
 
             return res.status(200).json(product);
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "GET PRODUCT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to get product",
             });
         }
     },
-
 
     async getAllVisibleProducts(
         _req: Request,
@@ -167,17 +185,19 @@ const ProductController = {
             });
 
             return res.status(200).json(products);
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "GET ALL VISIBLE PRODUCTS ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to get products",
             });
         }
     },
-
 
     async getAllProducts(
         req: MyRequest,
@@ -186,7 +206,7 @@ const ProductController = {
         try {
             const user = await User.findById(req.userId);
 
-            if (user?.email !== "admin@shop.com") {
+            if (!user || user.email !== "admin@shop.com") {
                 return res.status(403).json({
                     message: "Only admins can access this route",
                 });
@@ -195,13 +215,16 @@ const ProductController = {
             const products = await Product.find();
 
             return res.status(200).json(products);
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "GET ALL PRODUCTS ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to get products",
             });
         }
     },
@@ -216,17 +239,19 @@ const ProductController = {
             return res.status(200).json({
                 message: count,
             });
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "GET PRODUCT COUNT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to get product count",
             });
         }
     },
-
 
     async searchProduct(
         req: Request<{}, {}, {}, { q: string }>,
@@ -235,7 +260,6 @@ const ProductController = {
         try {
             const query = req.query.q;
 
-            // No search query
             if (!query) {
                 const products = await Product.find({
                     isFeatured: true,
@@ -244,7 +268,6 @@ const ProductController = {
                 return res.status(200).json(products);
             }
 
-            // Empty search query
             if (query.trim() === "") {
                 const products = await Product.find([]);
 
@@ -253,15 +276,18 @@ const ProductController = {
 
             const searchValue = query.trim();
 
-            // Escape regex special characters
             const escapedQuery = searchValue.replace(
                 /[.*+?^${}()|[\]\\]/g,
                 "\\$&",
             );
 
-            const regex = new RegExp(escapedQuery, "i");
+            const regex = new RegExp(
+                escapedQuery,
+                "i",
+            );
 
-            const numericValue = parseFloat(searchValue);
+            const numericValue =
+                parseFloat(searchValue);
 
             const conditions: any[] = [
                 {
@@ -286,13 +312,16 @@ const ProductController = {
             }).limit(20);
 
             return res.status(200).json(results);
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "SEARCH PRODUCT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to search products",
             });
         }
     },
@@ -305,7 +334,7 @@ const ProductController = {
             // Check admin
             const user = await User.findById(req.userId);
 
-            if (user?.email !== "admin@shop.com") {
+            if (!user || user.email !== "admin@shop.com") {
                 return res.status(403).json({
                     message: "Only admins can access this route",
                 });
@@ -325,8 +354,9 @@ const ProductController = {
                 });
             }
 
-            // Find product
-            const product = await Product.findById(prodId);
+            const product = await Product.findById(
+                prodId,
+            );
 
             if (!product) {
                 return res.status(404).json({
@@ -336,72 +366,102 @@ const ProductController = {
 
             // Update normal fields
             product.about = req.body.about;
-            product.info = JSON.parse(String(req.body.info));
+
+            try {
+                product.info = JSON.parse(
+                    String(req.body.info),
+                );
+            } catch {
+                return res.status(400).json({
+                    message:
+                        "Invalid product information format",
+                });
+            }
+
             product.price = req.body.price;
-            product.isFeatured = req.body.isFeatured;
+            product.isFeatured =
+                req.body.isFeatured;
             product.category = req.body.category;
 
             // Get uploaded files
-            const files = (req.files as Express.Multer.File[]) || [];
+            const files =
+                (req.files as Express.Multer.File[]) ||
+                [];
 
-            // Only replace images if new images were uploaded
+            // Replace images only when new images exist
             if (files.length > 0) {
                 const publicDir = path.join(
                     process.cwd(),
                     "public",
                 );
 
-                // Make sure public directory exists
                 await mkdir(publicDir, {
                     recursive: true,
                 });
 
                 // Delete old images
-                if (product.images && product.images.length > 0) {
+                if (
+                    product.images &&
+                    product.images.length > 0
+                ) {
                     await Promise.all(
-                        product.images.map(async (image) => {
-                            try {
-                                const oldImagePath = path.join(
-                                    publicDir,
-                                    image,
-                                );
+                        product.images.map(
+                            async (image) => {
+                                try {
+                                    const oldImagePath =
+                                        path.join(
+                                            publicDir,
+                                            image,
+                                        );
 
-                                await unlink(oldImagePath);
-                            } catch (error: any) {
-                                // Ignore if old image doesn't exist
-                                if (error.code !== "ENOENT") {
-                                    console.error(
-                                        "Error deleting old image:",
-                                        error,
+                                    await unlink(
+                                        oldImagePath,
                                     );
+                                } catch (error: any) {
+                                    if (
+                                        error.code !==
+                                        "ENOENT"
+                                    ) {
+                                        console.error(
+                                            "Error deleting old image:",
+                                            error,
+                                        );
+                                    }
                                 }
-                            }
-                        }),
+                            },
+                        ),
                     );
                 }
 
                 // Save new images
-                const filenames = await Promise.all(
-                    files.map(async (file, i) => {
-                        const ext = path
-                            .extname(file.originalname)
-                            .toLowerCase();
+                const filenames =
+                    await Promise.all(
+                        files.map(
+                            async (file, i) => {
+                                const ext =
+                                    path
+                                        .extname(
+                                            file.originalname,
+                                        )
+                                        .toLowerCase();
 
-                        const filename = `${product._id}-${i}${ext}`;
+                                const filename = `${product._id}-${i}${ext}`;
 
-                        const filePath = path.join(
-                            publicDir,
-                            filename,
-                        );
+                                const filePath =
+                                    path.join(
+                                        publicDir,
+                                        filename,
+                                    );
 
-                        await writeFile(
-                            filePath,
-                            file.buffer,
-                        );
+                                await writeFile(
+                                    filePath,
+                                    file.buffer,
+                                );
 
-                        return filename;
-                    }),
-                );
+                                return filename;
+                            },
+                        ),
+                    );
 
                 product.images = filenames;
             }
@@ -409,20 +469,23 @@ const ProductController = {
             await product.save();
 
             return res.status(200).json({
-                message: "Product Updated Successfully",
+                message:
+                    "Product Updated Successfully",
                 product,
             });
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "UPDATE PRODUCT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to update product",
             });
         }
     },
-
 
     async toggleProduct(
         req: MyRequest<{ prodId: string }>,
@@ -431,21 +494,29 @@ const ProductController = {
         try {
             const user = await User.findById(req.userId);
 
-            if (!user || user.email !== "admin@shop.com") {
+            if (
+                !user ||
+                user.email !== "admin@shop.com"
+            ) {
                 return res.status(403).json({
-                    message: "Only admins can access this route",
+                    message:
+                        "Only admins can access this route",
                 });
             }
 
             const { prodId } = req.params;
 
-            if (!mongoose.Types.ObjectId.isValid(prodId)) {
+            if (
+                !mongoose.Types.ObjectId.isValid(prodId)
+            ) {
                 return res.status(400).json({
                     message: "Invalid product ID",
                 });
             }
 
-            const product = await Product.findById(prodId);
+            const product = await Product.findById(
+                prodId,
+            );
 
             if (!product) {
                 return res.status(404).json({
@@ -465,13 +536,16 @@ const ProductController = {
                     : "Product set to Visible",
                 products,
             });
-        } catch (error) {
-            const e = error as Error;
-
-            console.error(error);
+        } catch (error: any) {
+            console.error(
+                "TOGGLE PRODUCT ERROR:",
+                error,
+            );
 
             return res.status(500).json({
-                message: e.message,
+                message:
+                    error?.message ||
+                    "Failed to toggle product",
             });
         }
     },
