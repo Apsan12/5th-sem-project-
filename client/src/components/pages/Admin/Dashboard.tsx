@@ -16,17 +16,17 @@ export default function DashboardPage() {
         const token = localStorage.getItem("token");
         if (!token) navigate("/");
         axios
-            .get("http://localhost:5000/order/count", {
+            .get(`${import.meta.env.VITE_API_URL}/order/count`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
                 setOrderCount(res.data.message);
             });
-        axios.get("http://localhost:5000/product/count").then((res) => {
+        axios.get(`${import.meta.env.VITE_API_URL}/product/count`).then((res) => {
             setProductCount(res.data.message);
         });
         axios
-            .get("http://localhost:5000/user/count", {
+            .get(`${import.meta.env.VITE_API_URL}/user/count`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -34,7 +34,7 @@ export default function DashboardPage() {
             });
 
         axios
-            .get("http://localhost:5000/order/all", {
+            .get(`${import.meta.env.VITE_API_URL}/order/all`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -125,3 +125,4 @@ export default function DashboardPage() {
         </>
     );
 }
+

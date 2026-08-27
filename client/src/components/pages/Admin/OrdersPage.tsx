@@ -18,7 +18,7 @@ export default function OrdersAdminPage() {
         const token = localStorage.getItem("token");
 
         axios
-            .get("http://localhost:5000/order/all", {
+            .get(`${import.meta.env.VITE_API_URL}/order/all`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -72,7 +72,7 @@ export default function OrdersAdminPage() {
 
         axios
             .put(
-                "http://localhost:5000/order/status",
+                `${import.meta.env.VITE_API_URL}/order/status`,
                 {
                     pidx: pidx,
                     orderId: orderId,
@@ -210,3 +210,4 @@ export default function OrdersAdminPage() {
         </>
     );
 }
+

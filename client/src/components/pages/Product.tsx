@@ -18,7 +18,7 @@ export default function ProductPage() {
     const [category, setCategory] = useState<string>("all");
 
     useEffect(() => {
-        axios.get("http://localhost:5000/product").then((res) => {
+        axios.get(`${import.meta.env.VITE_API_URL}/product`).then((res) => {
             setProducts(res.data);
             const products = res.data as IProduct[];
             const filter = products.filter(
@@ -122,3 +122,4 @@ export default function ProductPage() {
         </>
     );
 }
+

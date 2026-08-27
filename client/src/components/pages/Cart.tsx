@@ -32,7 +32,7 @@ export default function CartPage() {
         }
 
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: {
                     Authorization: token,
                 },
@@ -80,7 +80,7 @@ export default function CartPage() {
         }
 
         axios
-            .delete("http://localhost:5000/user/cart/remove/", {
+            .delete(`${import.meta.env.VITE_API_URL}/user/cart/remove/`, {
                 headers: {
                     Authorization: token,
                 },
@@ -116,7 +116,7 @@ export default function CartPage() {
 
         axios
             .delete(
-                `http://localhost:5000/user/cart/remove/${cartId}`,
+                `${import.meta.env.VITE_API_URL}/user/cart/remove/${cartId}`,
                 {
                     headers: {
                         Authorization: token,
@@ -201,7 +201,7 @@ export default function CartPage() {
 
             // Send final amount including delivery
             const response = await axios.post(
-                "http://localhost:5000/payment/initiate",
+                `${import.meta.env.VITE_API_URL}/payment/initiate`,
                 {
                     amount: netTotal,
 
@@ -351,7 +351,7 @@ export default function CartPage() {
                                                       <div className="flex items-center gap-4">
 
                                                           <img
-                                                              src={`http://localhost:5000/${item.image}`}
+                                                              src={`${import.meta.env.VITE_API_URL}/${item.image}`}
                                                               alt={
                                                                   item.product
                                                               }

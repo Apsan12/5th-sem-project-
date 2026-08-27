@@ -18,7 +18,7 @@ export default function PaymentVerify() {
         }
 
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: {
                     Authorization: token,
                 },
@@ -82,7 +82,7 @@ export default function PaymentVerify() {
 
                 if (status === "Completed") {
                     axios
-                        .post("http://localhost:5000/order", order, {
+                        .post(`${import.meta.env.VITE_API_URL}/order`, order, {
                             headers: { Authorization: token },
                         })
                         .then((res) => {
@@ -103,3 +103,4 @@ export default function PaymentVerify() {
 
     return <></>;
 }
+

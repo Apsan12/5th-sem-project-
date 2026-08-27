@@ -99,7 +99,7 @@ export default function AddProductForm() {
 
         if (!error) {
             axios
-                .post("http://localhost:5000/product", formData, {
+                .post(`${import.meta.env.VITE_API_URL}/product`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Authorization: token,
@@ -280,3 +280,4 @@ export default function AddProductForm() {
         </>
     );
 }
+

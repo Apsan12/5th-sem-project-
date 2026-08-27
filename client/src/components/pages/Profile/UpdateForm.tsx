@@ -31,7 +31,7 @@ export default function UpdateForm() {
         else payload.phone = phone;
 
         axios
-            .put("http://localhost:5000/user/update", payload, { headers: { Authorization: token } })
+            .put(`${import.meta.env.VITE_API_URL}/user/update`, payload, { headers: { Authorization: token } })
             .then((res) => {
                 toast.success(res.data.message, { theme: "colored" });
                 navigate("..");
@@ -77,3 +77,4 @@ export default function UpdateForm() {
         </form>
     );
 }
+

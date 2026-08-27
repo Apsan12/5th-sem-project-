@@ -16,7 +16,7 @@ export default function OrderAdminInfoPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         axios
-            .get(`http://localhost:5000/order/info/${id}`, {
+            .get(`${import.meta.env.VITE_API_URL}/order/info/${id}`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -38,7 +38,7 @@ export default function OrderAdminInfoPage() {
     const handleStatusChange = () => {
         axios
             .put(
-                "http://localhost:5000/order/status",
+                `${import.meta.env.VITE_API_URL}/order/status`,
                 {
                     orderId: order?._id,
                     status: status,
@@ -117,7 +117,7 @@ export default function OrderAdminInfoPage() {
                                     </td>
                                     <td className="flex gap-2 items-center border-0">
                                         <img
-                                            src={`http://localhost:5000/${prod.product.images[0]}`}
+                                            src={`${import.meta.env.VITE_API_URL}/${prod.product.images[0]}`}
                                             alt=""
                                             className="w-32 h-24"
                                         />
@@ -145,3 +145,4 @@ export default function OrderAdminInfoPage() {
         </>
     );
 }
+

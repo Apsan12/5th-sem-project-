@@ -16,7 +16,7 @@ export default function ProductAdminPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         axios
-            .get("http://localhost:5000/product/admin", {
+            .get(`${import.meta.env.VITE_API_URL}/product/admin`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -45,7 +45,7 @@ export default function ProductAdminPage() {
         console.log(token);
         axios
             .put(
-                `http://localhost:5000/product/toggle/${id}`,
+                `${import.meta.env.VITE_API_URL}/product/toggle/${id}`,
                 {},
                 {
                     headers: { Authorization: token },
@@ -107,7 +107,7 @@ export default function ProductAdminPage() {
                                     <td>{item._id}</td>
                                     <td className="flex border-0 items-center gap-4">
                                         <img
-                                            src={`http://localhost:5000/${item.images[0]}`}
+                                            src={`${import.meta.env.VITE_API_URL}/${item.images[0]}`}
                                             alt=""
                                             className="w-32 h-24"
                                         />
@@ -167,3 +167,4 @@ export default function ProductAdminPage() {
         </>
     );
 }
+

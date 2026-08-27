@@ -31,7 +31,7 @@ export default function RegisterPage() {
         }
 
         axios
-            .post("http://localhost:5000/user", payload)
+            .post(`${import.meta.env.VITE_API_URL}/user`, payload)
             .then((res) => {
                 toast.success(res.data.message, {
                     theme: "colored",
@@ -126,3 +126,4 @@ export default function RegisterPage() {
         </>
     );
 }
+

@@ -18,7 +18,7 @@ export default function AddressPage() {
         const token = localStorage.getItem("token");
         if (!token || token === "") navigate("/login");
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -34,7 +34,7 @@ export default function AddressPage() {
         if (!token || token === "") navigate("/login");
 
         axios
-            .delete(`http://localhost:5000/user/address/del/${index}`, {
+            .delete(`${import.meta.env.VITE_API_URL}/user/address/del/${index}`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -52,7 +52,7 @@ export default function AddressPage() {
 
         axios
             .put(
-                `http://localhost:5000/user/address/default/${index.toString()}`,
+                `${import.meta.env.VITE_API_URL}/user/address/default/${index.toString()}`,
                 {},
                 { headers: { Authorization: token } },
             )
@@ -112,3 +112,4 @@ export default function AddressPage() {
         </>
     );
 }
+

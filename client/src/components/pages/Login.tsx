@@ -19,7 +19,7 @@ export default function LoginPage() {
         const payload = { email, password };
 
         axios
-            .post("http://localhost:5000/user/login", payload)
+            .post(`${import.meta.env.VITE_API_URL}/user/login`, payload)
             .then((res) => {
                 toast.success("User Login Successful", { theme: "colored" });
                 localStorage.setItem("token", res.data.message);
@@ -76,3 +76,4 @@ export default function LoginPage() {
         </>
     );
 }
+

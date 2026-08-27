@@ -18,7 +18,7 @@ export default function AdminLayout() {
         if (!token) navigate("/");
 
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -81,3 +81,4 @@ export default function AdminLayout() {
         </>
     );
 }
+

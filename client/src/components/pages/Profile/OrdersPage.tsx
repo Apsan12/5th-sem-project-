@@ -18,7 +18,7 @@ export default function OrdersPage() {
         if (!token || token === "") navigate("/login");
 
         axios
-            .get("http://localhost:5000/order", {
+            .get(`${import.meta.env.VITE_API_URL}/order`, {
                 headers: { Authorization: token },
             })
             .then((res) => setOrders(res.data))
@@ -49,7 +49,7 @@ export default function OrdersPage() {
 
         axios
             .put(
-                `http://localhost:5000/order/cancel/${orderId}`,
+                `${import.meta.env.VITE_API_URL}/order/cancel/${orderId}`,
                 {},
                 { headers: { Authorization: token } },
             )
@@ -156,3 +156,4 @@ export default function OrdersPage() {
         </>
     );
 }
+

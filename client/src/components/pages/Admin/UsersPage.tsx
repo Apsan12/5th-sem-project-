@@ -15,7 +15,7 @@ export default function UsersAdminPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         axios
-            .get("http://localhost:5000/user/info", {
+            .get(`${import.meta.env.VITE_API_URL}/user/info`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -44,7 +44,7 @@ export default function UsersAdminPage() {
     const toggleUser = (id: string) => {
         const token = localStorage.getItem("token");
         axios
-            .delete(`http://localhost:5000/user/toggle/${id}`, {
+            .delete(`${import.meta.env.VITE_API_URL}/user/toggle/${id}`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -139,3 +139,4 @@ export default function UsersAdminPage() {
         </>
     );
 }
+

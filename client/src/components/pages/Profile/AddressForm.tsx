@@ -24,7 +24,7 @@ export default function AddressForm() {
         const addrStr = `${additional}, ${district}, ${province}, Nepal`;
 
         axios
-            .post("http://localhost:5000/user/address/add", { address: addrStr }, { headers: { Authorization: token } })
+            .post(`${import.meta.env.VITE_API_URL}/user/address/add`, { address: addrStr }, { headers: { Authorization: token } })
             .then((res) => {
                 toast.success(res.data.message, { theme: "colored" });
                 navigate("..");
@@ -66,3 +66,4 @@ export default function AddressForm() {
         </>
     );
 }
+

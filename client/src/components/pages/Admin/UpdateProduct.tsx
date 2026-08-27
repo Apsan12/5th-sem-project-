@@ -28,7 +28,7 @@ export default function UpdateProductForm() {
         let cancelled = false;
 
         axios
-            .get(`http://localhost:5000/product/admin/single/${id}`, {
+            .get(`${import.meta.env.VITE_API_URL}/product/admin/single/${id}`, {
                 headers: { Authorization: localStorage.getItem("token") },
             })
             .then((res) => {
@@ -43,7 +43,7 @@ export default function UpdateProductForm() {
                 if (!cancelled)
                     product.images.forEach((image) => {
                         axios
-                            .get(`http://localhost:5000/${image}`, {
+                            .get(`${import.meta.env.VITE_API_URL}/${image}`, {
                                 responseType: "blob",
                                 headers: { "Content-Type": "image/jpeg" },
                             })
@@ -132,7 +132,7 @@ export default function UpdateProductForm() {
 
         if (!error) {
             axios
-                .put("http://localhost:5000/product", formData, {
+                .put(`${import.meta.env.VITE_API_URL}/product`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Authorization: token,
@@ -318,3 +318,4 @@ export default function UpdateProductForm() {
         </>
     );
 }
+

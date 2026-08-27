@@ -31,7 +31,7 @@ export default function Card(props: CardProp) {
         };
 
         axios
-            .post("http://localhost:5000/user/cart/add", payload, {
+            .post(`${import.meta.env.VITE_API_URL}/user/cart/add`, payload, {
                 headers: {
                     Authorization: token,
                 },
@@ -54,7 +54,7 @@ export default function Card(props: CardProp) {
                 }}
             >
                 <img
-                    src={`http://localhost:5000/${props.image}`}
+                    src={`${import.meta.env.VITE_API_URL}/${props.image}`}
                     className="w-full h-40"
                 />
                 <div className="flex flex-col gap-4 items-center">
@@ -75,3 +75,4 @@ export default function Card(props: CardProp) {
         </>
     );
 }
+

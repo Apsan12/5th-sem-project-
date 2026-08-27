@@ -23,7 +23,7 @@ export default function ProductInfoPage() {
     const { setUser } = useContext<UserContextType>(UserContext);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/product/single/${id}`).then((res) => {
+        axios.get(`${import.meta.env.VITE_API_URL}/product/single/${id}`).then((res) => {
             if (!res.data) {
                 toast.error("Product does not exists or is hidden", {
                     theme: "colored",
@@ -47,7 +47,7 @@ export default function ProductInfoPage() {
             qty: quantity,
         };
         axios
-            .post("http://localhost:5000/user/cart/add", payload, {
+            .post(`${import.meta.env.VITE_API_URL}/user/cart/add`, payload, {
                 headers: {
                     Authorization: token,
                 },
@@ -67,7 +67,7 @@ export default function ProductInfoPage() {
             <div className="m-auto mx-40 grid grid-cols-2 grid-rows-1 gap-16 place-items-center mt-12 mb-4">
                 <div className="flex flex-col justify-center gap-4 items-center h-fit">
                     <img
-                        src={`http://localhost:5000/${primary}`}
+                        src={`${import.meta.env.VITE_API_URL}/${primary}`}
                         className="h-90 w-120 mb-8"
                     />
                     <div className="flex justify-start gap-3 w-full h-16 overflow-y-auto">
@@ -79,7 +79,7 @@ export default function ProductInfoPage() {
                                         ? "border-slate-500 border-2 rounded-md"
                                         : "",
                                 )}
-                                src={`http://localhost:5000/${image}`}
+                                src={`${import.meta.env.VITE_API_URL}/${image}`}
                                 alt=""
                                 onClick={() => {
                                     setPrimaryImage(image);
@@ -174,3 +174,4 @@ export default function ProductInfoPage() {
         </>
     );
 }
+

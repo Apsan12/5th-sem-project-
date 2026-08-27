@@ -24,7 +24,7 @@ export default function Header(props: { color: "dark" | "light" }) {
         console.log(location.pathname);
 
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -137,3 +137,4 @@ export default function Header(props: { color: "dark" | "light" }) {
         </>
     );
 }
+

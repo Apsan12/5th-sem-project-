@@ -23,7 +23,7 @@ export default function HomePage() {
         if (!token) return;
 
         axios
-            .get("http://localhost:5000/user", {
+            .get(`${import.meta.env.VITE_API_URL}/user`, {
                 headers: { Authorization: token },
             })
             .then((res) => setUser(res.data))
@@ -140,3 +140,4 @@ export default function HomePage() {
         </>
     );
 }
+

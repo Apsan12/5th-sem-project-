@@ -21,7 +21,7 @@ export default function ProfileMainPage() {
 
         if (!user)
             axios
-                .get("http://localhost:5000/user", {
+                .get(`${import.meta.env.VITE_API_URL}/user`, {
                     headers: {
                         Authorization: token,
                     },
@@ -31,7 +31,7 @@ export default function ProfileMainPage() {
                 });
 
         axios
-            .get("http://localhost:5000/order", {
+            .get(`${import.meta.env.VITE_API_URL}/order`, {
                 headers: { Authorization: token },
             })
             .then((res) => setOrders(res.data))
@@ -163,3 +163,4 @@ export default function ProfileMainPage() {
         </>
     );
 }
+

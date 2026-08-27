@@ -15,7 +15,7 @@ export default function OrderInfoPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         axios
-            .get(`http://localhost:5000/order/info/${id}`, {
+            .get(`${import.meta.env.VITE_API_URL}/order/info/${id}`, {
                 headers: { Authorization: token },
             })
             .then((res) => {
@@ -44,7 +44,7 @@ export default function OrderInfoPage() {
 
         axios
             .put(
-                "http://localhost:5000/order/cancel",
+                `${import.meta.env.VITE_API_URL}/order/cancel`,
                 { orderId: order._id, pidx: order.pidx },
                 { headers: { Authorization: token } },
             )
@@ -112,7 +112,7 @@ export default function OrderInfoPage() {
                                     </td>
                                     <td className="flex gap-2 items-center border-0">
                                         <img
-                                            src={`http://localhost:5000/${prod.product.images[0]}`}
+                                            src={`${import.meta.env.VITE_API_URL}/${prod.product.images[0]}`}
                                             alt=""
                                             className="w-32 h-24"
                                         />
@@ -140,3 +140,4 @@ export default function OrderInfoPage() {
         </>
     );
 }
+
