@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
-export default function connectMongoDB() {
-    mongoose.connect("mongodb://127.0.0.1:27017/aes");
-    const db = mongoose.connection;
-    db.on("error", console.error.bind(console, "MongoDB Connection Error: "));
-    db.once("open", () => {
+export default async function connectMongoDB() {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI as string);
+
         console.log("MongoDB Connection Successful");
-    });
+    } catch (error) {
+        console.error("MongoDB Connection Error:", error);
+        throw error;
+    }
 }

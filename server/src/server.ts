@@ -12,44 +12,73 @@ import paymentRouter from "./routes/PaymentRoutes.js";
 
 const app = express();
 
+// Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// CORS
+const allowedOrigins = [
+    "http://localhost:3000",
+    // Add your Vercel frontend URL here after deployment
+    // "https://your-frontend.vercel.app",
+];
+
 app.use(
     cors({
-        origin: "http://localhost:3000", // your frontend URL
+        origin: allowedOrigins,
         allowedHeaders: ["Content-Type", "Authorization"],
         methods: ["GET", "POST", "PUT", "DELETE"],
     }),
 );
 
+
 app.use(express.static("public"));
 
-connectMongoDB();
-
+// Routes
 app.use(userRouter);
 app.use(productRouter);
 app.use(orderRouter);
 app.use(paymentRouter);
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server started at http://localhost:${process.env.PORT}`);
-});
+// Start Server
+async function startServer() {
+    try {
+        // Connect to MongoDB first
+        await connectMongoDB();
 
-const user = await User.findOne({ email: "admin@shop.com" });
+        // Check if admin user exists
+        const user = await User.findOne({
+            email: "admin@shop.com",
+        });
 
-if (!user) {
-    const admin = {
-        fullName: "Admin",
-        email: "admin@shop.com",
-        password: "Admin@123",
-        phone: "0123456789",
-    };
+        // Create admin user if it doesn't exist
+        if (!user) {
+            const admin = {
+                fullName: "Admin",
+                email: "admin@shop.com",
+                password: "Admin@123",
+                phone: "0123456789",
+            };
 
-    await User.create(admin).then(() => {
-        console.log("Created Admin User");
-    });
+            await User.create(admin);
+
+            console.log("Created Admin User");
+        }
+
+        console.log(
+            "\nAdmin Credentials:\nEmail: admin@shop.com\nPassword: Admin@123\n",
+        );
+
+       
+        const PORT = process.env.PORT || 5000;
+
+        app.listen(PORT, () => {
+            console.log(`Server started on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Server startup error:", error);
+        process.exit(1);
+    }
 }
-console.log(
-    "\nAdmin Credentials:\nEmail: admin@shop.com\nPassword: Admin@123\n",
-);
+
+startServer();
