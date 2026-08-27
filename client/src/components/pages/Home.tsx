@@ -1,3 +1,4 @@
+import headerImage from "../../assets/images/header.jpg";
 import Header from "../ui/Header";
 import {
     PiCpuBold,
@@ -36,7 +37,7 @@ export default function HomePage() {
             <div className="flex flex-col w-full">
                 <div className="w-full min-h-screen bg-black flex gap">
                     <img
-                        src="/src/assets/images/header.jpg"
+                        src={headerImage}
                         className="w-[50%] h-screen bg-contain"
                     />
                     <div className="w-full h-screen flex flex-col justify-center items-center gap-8">
@@ -140,4 +141,5 @@ export default function HomePage() {
         </>
     );
 }
+
 
