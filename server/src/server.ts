@@ -17,19 +17,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // CORS
+
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://project-git-main-apsans-projects-d6a4facb.vercel.app/",
+    "https://project-git-main-apsans-projects-d6a4facb.vercel.app",
 ];
 
 app.use(
     cors({
         origin: allowedOrigins,
         allowedHeaders: ["Content-Type", "Authorization"],
-        methods: ["GET", "POST", "PUT", "DELETE"],
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     }),
 );
-
 // Static files
 app.use(express.static("public"));
 
