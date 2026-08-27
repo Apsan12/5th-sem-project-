@@ -1,0 +1,1 @@
+{"version":3,"file":"KhaltiLookup.d.ts","sourceRoot":"","sources":["../../src/types/KhaltiLookup.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,oBAAoB;IACjC,IAAI,EAAE,MAAM,CAAC;IACb,YAAY,EAAE,MAAM,CAAC;IACrB,MAAM,EAAE,MAAM,CAAC;IACf,cAAc,EAAE,MAAM,GAAG,IAAI,CAAC;IAC9B,GAAG,EAAE,MAAM,CAAC;IACZ,QAAQ,EAAE,OAAO,CAAC;CACrB"}
