@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://project-git-main-apsans-projects-d6a4facb.vercel.app",
+    "https://5th-sem-project-git-main-apsans-projects-d6a4facb.vercel.app",
 ];
 
 app.use(
@@ -30,6 +30,7 @@ app.use(
         origin: allowedOrigins,
         allowedHeaders: ["Content-Type", "Authorization"],
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        credentials: true,
     }),
 );
 
