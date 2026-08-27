@@ -11,8 +11,8 @@ const PaymentController = {
             const paymentResponse = await axios.post(
                 "https://dev.khalti.com/api/v2/epayment/initiate/",
                 {
-                    return_url: "http://localhost:3000/payment-verify",
-                    website_url: "http://localhost:3000/",
+                   return_url: `${process.env.FRONTEND_URL}/payment-verify`,
+website_url: process.env.FRONTEND_URL,
 
                     // Total amount in paisa
                     // No delivery fee added
